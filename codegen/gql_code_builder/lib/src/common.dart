@@ -47,6 +47,7 @@ const _reserved = <String>[
   "Map",
   "List",
   "Set",
+  'update',
 ];
 
 class SourceSelections {
@@ -129,9 +130,7 @@ TypeDefinitionNode? getTypeDefinitionNode(
   DocumentNode schema,
   String name,
 ) =>
-    schema.definitions
-        .whereType<TypeDefinitionNode>()
-        .firstWhereOrNull((node) => node.name.value == name);
+    schema.definitions.whereType<TypeDefinitionNode>().firstWhereOrNull((node) => node.name.value == name);
 
 Method buildGetter({
   required NameNode nameNode,
@@ -230,6 +229,5 @@ Method buildFromJsonGetter(String className) => Method(
         ..lambda = true
         ..body = refer("serializers", "#serializer")
             .property("deserializeWith")
-            .call(
-                [refer(className).property("serializer"), refer("json")]).code,
+            .call([refer(className).property("serializer"), refer("json")]).code,
     );
